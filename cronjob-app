@@ -1,41 +1,15 @@
-apiVersion: batch/v1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: test-cronjob
+  name: cronjober
 spec:
-  schedule: "* * * * *"
+  schedule: "0 6 * * *"
+  # schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: test-cronjob
-            image: registry.k8s.io/busybox
-            command: [ "sh", "-c"]
-            args:
-            -   echo -en '\n';
-                printenv MY_NODE_NAME MY_POD_NAME MY_POD_NAMESPACE;
-                printenv MY_POD_IP MY_POD_SERVICE_ACCOUNT;
-                sleep 10;
-            env:
-              - name: MY_NODE_NAME
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.nodeName
-              - name: MY_POD_NAME
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.name
-              - name: MY_POD_NAMESPACE
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.namespace
-              - name: MY_POD_IP
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              - name: MY_POD_SERVICE_ACCOUNT
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.serviceAccountName
-          restartPolicy: OnFailure
+          - name: cronjober
+            image: registry.k8s.io/busybox                  
+          restartPolicy: Never
